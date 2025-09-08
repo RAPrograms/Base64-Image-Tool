@@ -1,7 +1,7 @@
 <section>
     <header>Base 64 String</header>
     <textarea placeholder="Paste the base 64 image string here"></textarea>
-    <button>Clear All</button>
+    <button disabled>Clear All</button>
 </section>
 
 <style lang="scss">
@@ -34,9 +34,10 @@
         }
 
         & > button{
-            --background-colour: #1C1A27;
+            --background-colour: #a13838;
 
-            background: var(--background-colour);
+            background-color: var(--background-colour);
+            transition: 350ms all ease-out;
             border-radius: 10px;
             text-align: center;
             padding: 10px 3px;
@@ -45,8 +46,15 @@
             border: none;
             width: 90%;
 
-            &:hover{
-                background: color-mix(in hsl shorter, var(--background-colour), white 20%);
+            &:disabled{
+                background-color: rgba(128, 128, 128, 0.341);
+                opacity: 0.4;
+            }
+        
+
+            &:not(:disabled):hover{
+                background-color: color-mix(in srgb, transparent 30%, var(--background-colour));
+                transition: 150ms all ease-in;
             }
         }
     }
