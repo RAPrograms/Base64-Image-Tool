@@ -1,10 +1,9 @@
-<script lang="ts">
-    const owner = import.meta.env.VITE_PROJECT_OWNER
-</script>
-
 <header>
     <h1>Base64 Image Tool</h1>
-    <div>By {owner}</div>
+    <div>
+        By 
+        <a href="https://raprograms.co.uk/" target="_blank">RAPrograms</a>
+    </div>
 </header>
 
 <style lang="scss">
