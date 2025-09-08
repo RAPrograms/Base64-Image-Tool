@@ -1,6 +1,10 @@
+<script lang="ts">
+    import { state } from "../lib/state.svelte"
+</script>
+
 <section>
     <header>Base 64 String</header>
-    <textarea placeholder="Paste the base 64 image string here"></textarea>
+    <textarea bind:value={state.value} placeholder="Paste the base 64 image string here"></textarea>
     <button disabled>Clear All</button>
 </section>
 

@@ -1,10 +1,15 @@
-<script>
+<script lang="ts">
   import "./main.scss"
 
+  import ImagePane from "./components/ImagePane.svelte";
   import FieldPane from "./components/FieldPane.svelte";
   import Footer from "./components/Footer.svelte";
   import Header from "./components/Header.svelte";
-  import ImagePane from "./components/ImagePane.svelte";
+
+  let textState = $state({ text: "hello" });
+  $effect(() => {
+    console.log(textState)
+  })
 </script>
 
 <main>
@@ -12,7 +17,7 @@
 
   <ImagePane/>
 
-  <FieldPane/>
+  <FieldPane bind:state={textState}/>
 
   <Footer/>
 </main>

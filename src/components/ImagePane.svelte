@@ -1,6 +1,28 @@
+<script lang="ts">
+    import { state } from "../lib/state.svelte"
+
+    async function handle_file({target}:{target: HTMLInputElement}){
+        const files = target.files
+        if(files == undefined || files.length <= 0)
+            return
+
+        const [data, error] = await new Promise<[string, any]>((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(files[0]);
+            reader.onload = () => resolve([reader.result as string, null])
+            //@ts-ignore
+            reader.onerror = (err) => resolve([null, err])
+        })
+        if(error)
+            return
+
+        state.value = data.substring(data.indexOf(',') + 1)
+    }
+</script>
+
 <section>
     <label>
-        <input type="file">
+        <input type="file" oninput={handle_file}>
         <div>
             <div>Click here</div>
             <div>or</div>
