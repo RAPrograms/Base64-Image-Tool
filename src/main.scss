@@ -4,10 +4,11 @@ main{
     gap: 10px;
 
     @media (width >= 500px) {
-        display: grid; 
-        grid-auto-columns: 1fr; 
+        grid-template-rows: max-content 1fr max-content; 
         grid-template-columns: 1fr max-content; 
-        grid-template-rows: 1fr 1fr 1fr; 
+        grid-auto-columns: 1fr; 
+        padding-right: 10px;
+        display: grid; 
         grid-template-areas: 
             "Image Header"
             "Image Field"
@@ -15,9 +16,9 @@ main{
     }
 
     @media (width < 500px) {
-        display: flex;
         justify-content: center;
         flex-direction: column;
+        display: flex;
     }
 
     & > :global(*){
