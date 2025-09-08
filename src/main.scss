@@ -1,0 +1,26 @@
+main{
+    min-height: 100vh;
+    max-height: 100vh;
+    gap: 10px;
+
+    @media (width >= 500px) {
+        display: grid; 
+        grid-auto-columns: 1fr; 
+        grid-template-columns: 1fr max-content; 
+        grid-template-rows: 1fr 1fr 1fr; 
+        grid-template-areas: 
+            "Image Header"
+            "Image Field"
+            "Image Footer"; 
+    }
+
+    @media (width < 500px) {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    & > :global(*){
+        max-height: 100%;
+    }
+}
