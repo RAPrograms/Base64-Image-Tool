@@ -8,11 +8,12 @@
 
 <style lang="scss">
     header{
+        margin-top: 10px;
         padding: 10px;
 
         & > h1{
-            line-height: 20px;
             font-size: x-large;
+            line-height: 20px;
         }
 
         & > div{

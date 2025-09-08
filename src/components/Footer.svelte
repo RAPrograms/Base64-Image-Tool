@@ -14,16 +14,18 @@
 
 <style lang="scss">
     footer{
-        display: flex;
-        gap: 5px;
+        justify-content: center;
         align-items: center;
+        margin-bottom: 10px;
+        font-size: 15px;
+        display: flex;
+        padding: 3px;
         height: 30px;
-        font-size: 20px;
+        gap: 5px;
 
         & > :global(svg){
             height: 100%;
             aspect-ratio: 1/1;
         }
-
     }
 </style>
