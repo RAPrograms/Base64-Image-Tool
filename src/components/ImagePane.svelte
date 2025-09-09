@@ -8,6 +8,16 @@
         string = value
     }
 
+    function to_base_64(data){
+        return new Promise<[string, any]>((resolve) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(data);
+            reader.onload = () => resolve([reader.result as string, null])
+            //@ts-ignore
+            reader.onerror = (err) => resolve([null, err])
+        })
+    }
+
     async function handle_file({target}:{target: HTMLInputElement}){
         file_over = false
 
@@ -15,16 +25,21 @@
         if(files == undefined || files.length <= 0)
             return
 
-        const [data, error] = await new Promise<[string, any]>((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(files[0]);
-            reader.onload = () => resolve([reader.result as string, null])
-            //@ts-ignore
-            reader.onerror = (err) => resolve([null, err])
-        })
+        const [data, error] = await to_base_64(files[0])
+        if(error)
+            return
 
-        console.log(data, error)
+        string = data.substring(data.indexOf(',') + 1)
+        onchange(string)
+    }
 
+    async function handle_drop(e){
+        e.preventDefault()
+        file_over = false
+        if(e.dataTransfer.items.length <= 0)
+            return
+
+        const [data, error] = await to_base_64(e.dataTransfer.items[0].getAsFile())
         if(error)
             return
 
@@ -33,6 +48,11 @@
     }
 </script>
 
+<svelte:window ondrop={handle_drop} ondragover={(e) => {
+    e.preventDefault()
+    file_over = true
+}} ondragleave={() => {file_over = false}}/>
+
 <section>
     {#if string != ""}
         <img src="data:image/jpg;base64,{string}" alt="" onerror={() => {
@@ -40,7 +60,7 @@
             alert("Invalid Image")
         }}>
     {/if}
-    <label>
+    <label class:file_hover={file_over} >
         <input type="file" oninput={handle_file}>
         <div class:hover={file_over && string != ""}>
             <div>Click here</div>
@@ -65,12 +85,34 @@
             position: absolute;
             max-height: 100%;
             max-width: 100%;
+            z-index: 0;
             left: 50%;
             top: 50%;
         }
+
+        & > img ~ label.file_hover::after{
+            content: "";
+            width: 100%;
+            position: absolute;
+            height: 100%;
+            z-index: 1;
+            background-color: rgba(0, 0, 0, 0.4);
+
+            & > div{
+                visibility: visible;
+                display: block;
+            }
+        }
+
+        & > img ~ label:not(.file_hover) > div{
+            visibility: none;
+            display: none;
+        }
+        
     
         & > label {
             display: contents;
+            z-index: -1;
 
             & > input[type=file]{
                 display: none;
@@ -89,6 +131,7 @@
                 padding: 50px;
                 display: flex;
                 width: 100%;
+                z-index: 2;
             }
         }
     }
