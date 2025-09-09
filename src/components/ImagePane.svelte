@@ -1,7 +1,16 @@
 <script lang="ts">
-    import { state } from "../lib/state.svelte"
+    let string = $state("")
+    let file_over = $state(false)
+
+    let { onchange } : { onchange: (value: string) => void } = $props()
+
+    export function set_string(value: string){
+        string = value
+    }
 
     async function handle_file({target}:{target: HTMLInputElement}){
+        file_over = false
+
         const files = target.files
         if(files == undefined || files.length <= 0)
             return
@@ -13,17 +22,27 @@
             //@ts-ignore
             reader.onerror = (err) => resolve([null, err])
         })
+
+        console.log(data, error)
+
         if(error)
             return
 
-        state.value = data.substring(data.indexOf(',') + 1)
+        string = data.substring(data.indexOf(',') + 1)
+        onchange(string)
     }
 </script>
 
 <section>
+    {#if string != ""}
+        <img src="data:image/jpg;base64,{string}" alt="" onerror={() => {
+            string = ""
+            alert("Invalid Image")
+        }}>
+    {/if}
     <label>
         <input type="file" oninput={handle_file}>
-        <div>
+        <div class:hover={file_over && string != ""}>
             <div>Click here</div>
             <div>or</div>
             <div>Drop image file here</div>
@@ -33,15 +52,25 @@
 
 <style lang="scss">
     section{
-        display: contents;
+        background-color: #3E3E42;
+        place-content: center;
+        position: relative;
+        grid-area: Image;
+        display: grid;
+        padding: 10px;
+        flex-grow: 1;
+        
+        & > img{
+            translate: -50% -50%;
+            position: absolute;
+            max-height: 100%;
+            max-width: 100%;
+            left: 50%;
+            top: 50%;
+        }
     
         & > label {
-            background-color: #3E3E42;
-            place-content: center;
-            grid-area: Image;
-            display: grid;
-            padding: 10px;
-            flex-grow: 1;
+            display: contents;
 
             & > input[type=file]{
                 display: none;
@@ -56,6 +85,7 @@
                 border-radius: 2%;
                 aspect-ratio: 1/1;
                 max-width: 500px;
+                cursor: pointer;
                 padding: 50px;
                 display: flex;
                 width: 100%;

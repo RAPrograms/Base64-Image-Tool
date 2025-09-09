@@ -1,10 +1,22 @@
 <script lang="ts">
-    import { state } from "../lib/state.svelte"
+    const { onchange } : { onchange: (data: string) => void } = $props()
+
+    let textarea: HTMLTextAreaElement
+    let delay: number | undefined
+
+    function handle_change(){
+        clearTimeout(delay)
+        delay = setTimeout(() => onchange(textarea.value), 300)
+    }
+
+    export function change_value(value: string){
+        textarea.value = value
+    }
 </script>
 
 <section>
     <header>Base 64 String</header>
-    <textarea bind:value={state.value} placeholder="Paste the base 64 image string here"></textarea>
+    <textarea bind:this={textarea} oninput={handle_change} placeholder="Paste the base 64 image string here"></textarea>
     <button disabled>Clear All</button>
 </section>
 

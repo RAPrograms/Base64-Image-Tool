@@ -6,18 +6,20 @@
   import Footer from "./components/Footer.svelte";
   import Header from "./components/Header.svelte";
 
-  let textState = $state({ text: "hello" });
-  $effect(() => {
-    console.log(textState)
-  })
+  let img_component: ImagePane
+  let field_component: FieldPane
+
+  async function render_string(value: string){
+    
+  }
 </script>
 
 <main>
   <Header/>
 
-  <ImagePane/>
+  <ImagePane bind:this={img_component} onchange={(value: string) => field_component.change_value(value)}/>
 
-  <FieldPane bind:state={textState}/>
+  <FieldPane bind:this={field_component} onchange={(value: string) => img_component.set_string(value)}/>
 
   <Footer/>
 </main>
